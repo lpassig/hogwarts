@@ -41,7 +41,7 @@ output "availability_zone" {
 }
 
 output "instance_profile" {
-  value = aws_iam_instance_profile.ec2_s3_ssm_profile.name
+  value = aws_iam_instance_profile.magic_profile.name
 }
 
 output "vpc_security_group_ids" {
