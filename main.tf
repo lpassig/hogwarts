@@ -23,27 +23,32 @@ module "security-group" {
   vpc_id      = module.vpc.vpc_id
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
-  ingress_rules       = ["http-80-tcp"]
+  ingress_rules       = ["http-80-tcp", "ssh-tcp"]
   egress_rules        = ["all-all"]
 
 }
 
 output "vpc_id" {
-  value = nonsensitive(module.vpc.vpc_id)
+  value = module.vpc.vpc_id
+  sensitive = false
 }
 
 output "subnet_id" {
-  value = nonsensitive(element(module.vpc.public_subnets, 0))
+  value = element(module.vpc.public_subnets, 0)
+  sensitive = false
 }
 
 output "availability_zone" {
-  value = nonsensitive(element(module.vpc.azs, 0))
+  value = element(module.vpc.azs, 0)
+  sensitive = false
 }
 
 output "instance_profile" {
-  value = nonsensitive(aws_iam_instance_profile.magic_profile.name)
+  value = aws_iam_instance_profile.magic_profile.name
+  sensitive = false
 }
 
 output "vpc_security_group_ids" {
   value = [module.security-group.security_group_id]
+  sensitive = false
 }
