@@ -45,5 +45,5 @@ output "instance_profile" {
 }
 
 output "vpc_security_group_ids" {
-  value = nonsensitive([module.security-group.security_group_id])
+  value = [module.security-group.security_group_id]
 }
