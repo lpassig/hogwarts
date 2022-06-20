@@ -5,12 +5,12 @@ variable iam_policy_arn {
   default = ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore", "arn:aws:iam::aws:policy/AmazonS3FullAccess"]
 }
 
-resource "aws_iam_instance_profile" "ec2_s3_ssm_profile" {
-name = "ec2_s3_ssm_profile"
-role = aws_iam_role.s3_ssm_role.name
+resource "aws_iam_instance_profile" "magic_profile" {
+name = "magic_profile"
+role = aws_iam_role.magic_role.name
 }
 
-resource "aws_iam_role" "s3_ssm_role" {
+resource "aws_iam_role" "magic_role" {
 name        = "magic-role"
 description = "Connect to EC2 and let EC2 write to S3"
 assume_role_policy = <<EOF
@@ -27,18 +27,18 @@ EOF
 
 # Then parse through the list using count
 resource "aws_iam_role_policy_attachment" "role-policy-attachment" {
-  role       = aws_iam_role.s3_ssm_role.name
+  role       = aws_iam_role.magic_role.name
   count      = "${length(var.iam_policy_arn)}"
   policy_arn = "${var.iam_policy_arn[count.index]}"
 }
 
 
 resource "aws_iam_role_policy_attachment" "ssm_policy" {
- role       = aws_iam_role.s3_ssm_role.name
+ role       = aws_iam_role.magic_role.name
  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
  }
 
   resource "aws_iam_role_policy_attachment" "s3_policy" {
-  role       = aws_iam_role.s3_ssm_role.name
+  role       = aws_iam_role.magic_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
  }
